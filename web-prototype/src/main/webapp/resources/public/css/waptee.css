@@ -1,0 +1,96 @@
+.navbar {
+	background-color: #428bca;
+	border: none;
+	color: #f1f1f1;
+}
+
+.navbar-inverse .navbar-brand {
+	color: #f1f1f1;
+}
+
+.navbar-header {
+    float: left;
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+}
+
+.navbar-brand {
+	float:none;
+}
+
+.btn {
+    border-radius: 0px;
+}
+
+.form-control {
+	border-radius: 0px;
+	border: none;
+	padding: 3px 6px; 
+}
+
+.col-6 {
+	padding-right: 10px; 
+	padding-left: 0px; 
+}
+
+.topic {
+	padding-top: 3px;
+	padding-right: 5px;
+	padding-left: 5px;
+	color: #f1f1f1;
+	cursor: pointer;
+}
+
+.topic:hover {
+    opacity: 0.6;
+    filter:alpha(opacity=60);
+}
+
+.profile-topic {
+	background-color: #428bca;
+}
+
+.professional-topic {
+	background-color: #34495e;
+}
+
+.finance-topic {
+	background-color: #27ae60;
+}
+
+.trade-topic {
+	background-color: #f1c40f;
+}
+
+.body_health-topic {
+	background-color: #e74c3c;
+}
+
+.social-network-topic {
+	background-color: #d35400;
+}
+
+.custom-topic {
+	background-color: #1abc9c;
+}
+
+.new-custom-topic {
+	background-color: #95a5a6;
+}
+
+.control-label {
+	
+}
+
+.form-group {
+	color: #777;
+}
+
+.form-control {
+	border: 1px solid #bdc3c7;
+}
+
+.form-required {
+	border-left: 3px solid #e67e22;	
+}
