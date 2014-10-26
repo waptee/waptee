@@ -14,27 +14,32 @@
 
 package com.google.drive.samples.dredit;
 
-import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.Enumeration;
-import java.util.Properties;
 import java.util.Scanner;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpResponse;
+import com.google.api.client.http.InputStreamContent;
 import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.Drive.Files.List;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.File.Labels;
+import com.google.api.services.drive.model.FileList;
 import com.google.drive.samples.dredit.model.ClientFile;
+import com.google.gson.Gson;
+import com.waptee.catalog.profile.PersonalCatalog;
 
 /**
  * Servlet providing a small API for the DrEdit JavaScript client to use in
@@ -53,16 +58,18 @@ public class FileServlet extends DrEditServlet {
   public void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws IOException {
     Drive service = getDriveService(getCredential(req, resp));
-    String fileId = req.getParameter("file_id");
+    String fileId = req.getParameter("catalog");
 
     if (fileId == null) {
-      sendError(resp, 400, "The `file_id` URI parameter must be specified.");
+      sendError(resp, 400, "The catalog be specified.");
       return;
     }
 
     File file = null;
     try {
-      file = service.files().get(fileId).execute();
+      
+      file = getPersonalCatalogFile(service);
+      
     } catch (GoogleJsonResponseException e) {
       if (e.getStatusCode() == 401) {
         // The user has revoked our token or it is otherwise bad.
@@ -73,15 +80,39 @@ public class FileServlet extends DrEditServlet {
       }
     }
 
-    if (file != null) {
-      String content = downloadFileContent(service, file);
-      if (content == null) {
-        content = "";
+    try {
+      if (file != null) {
+        String content = downloadFileContent(service, file);
+        if (content == null) {
+          content = "";
+        }
+        
+        JAXBContext jaxbContext = JAXBContext.newInstance(PersonalCatalog.class);
+        
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        PersonalCatalog personal = (PersonalCatalog) jaxbUnmarshaller.unmarshal(new StringReader(content));
+        
+        Gson gson = new Gson();
+        content = gson.toJson(personal);
+        
+        sendJson(resp, new ClientFile(file, content));
+      
+      } else {
+        sendError(resp, 404, "File not found");
       }
-      sendJson(resp, new ClientFile(file, content));
-    } else {
-      sendError(resp, 404, "File not found");
+    } catch (JAXBException e) {
+      e.printStackTrace();
     }
+  }
+
+  private File getPersonalCatalogFile(Drive service) throws IOException {
+    File file;
+    List files = service.files().list();
+    files = files.setQ("title='waptee_personal'");
+    FileList fileList = files.execute();
+    java.util.List<File> list = fileList.getItems();
+    file = list.get(0);
+    return file;
   }
 
   /**
@@ -94,38 +125,61 @@ public class FileServlet extends DrEditServlet {
     
     Drive service = getDriveService(getCredential(req, resp));
     
-    Properties properties = new Properties();
-
-    Enumeration<String> parameters = req.getParameterNames();
-   
-    while (parameters.hasMoreElements()) {
-      String p = parameters.nextElement();
-      properties.put(p, req.getParameter(p));
-    }
-    
     StringWriter writer = new StringWriter();
-    properties.list(new PrintWriter(writer));
-
-    File file = new File();
     
-    file.setId(null);
-    file.setTitle("personal");
-    file.setDescription("Description");
-    file.setMimeType("text/plain");
-    file.setLabels(new Labels());
-    file.setEditable(true);
+    PersonalCatalog personal = new PersonalCatalog();
     
-    ClientFile clientFile = new ClientFile(file, writer.getBuffer().toString());
-    file = clientFile.toFile();
+    personal.setFirstName(req.getParameter("firstName"));
+    personal.setLastName(req.getParameter("lastName"));
+    personal.setNickname(req.getParameter("nickname"));
+    personal.setBirthday(req.getParameter("birthday"));
+    
+    try {
+      
+      JAXBContext jaxbContext = JAXBContext.newInstance(PersonalCatalog.class);
+      Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+      
+      jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-    if (!clientFile.content.equals("")) {
-      file = service.files().insert(file,
-          ByteArrayContent.fromString(clientFile.mimeType, clientFile.content))
-          .execute();
-    } else {
-      file = service.files().insert(file).execute();
+      jaxbMarshaller.marshal(personal, writer);
+      
+      File file = getPersonalCatalogFile(service);
+      
+      if (file == null) {
+        
+        file = new File();
+        
+        Labels labels = new Labels();
+        labels.put("Appplication Name", APP_NAME);
+        labels.put("Topic", "Profile");
+        labels.put("Catalog", "Personal");
+        
+        file.setTitle("waptee_personal");
+        file.setDescription("Dados pessoais");
+        file.setMimeType("text/xml");
+        file.setLabels(labels);
+        file.setEditable(true);
+        
+        ClientFile clientFile = new ClientFile(file, writer.getBuffer().toString());
+        file = clientFile.toFile();
+        
+        file = service.files().insert(file,
+            ByteArrayContent.fromString(clientFile.mimeType, clientFile.content))
+            .execute();
+        
+      } else {
+        
+        InputStreamContent mediaContent = new InputStreamContent("text/xml", new ByteArrayInputStream(writer.getBuffer().toString().getBytes()));
+
+        file = service.files().update(file.getId(), file, mediaContent).execute();
+        
+      }
+      sendJson(resp, file.getId());
+      
+    } catch (JAXBException e) {
+      e.printStackTrace();
     }
-    sendJson(resp, file.getId());
+    
   }
 
   /**

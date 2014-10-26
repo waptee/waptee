@@ -60,7 +60,7 @@
 
     <div class="container">
       <h3>Personal</h3>
-      <form class="form-horizontal" role="form" name="personalForm" ng-controller="FileCtrl" ng-submit="save()">
+      <form class="form-horizontal" role="form" name="personalForm" ng-controller="FileCtrl" ng-submit="save()" ng-init="load()">
         <div class="form-group">
           <label class="control-label col-sm-2" for="firstName">First Name</label>
           <div class="col-sm-5">
@@ -90,7 +90,6 @@
         </div>
         
 		<button type="submit" class="btn btn-primary">Submit</button>
-
       </form>
     </div>
 
