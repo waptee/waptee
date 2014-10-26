@@ -106,12 +106,14 @@ public class FileServlet extends DrEditServlet {
   }
 
   private File getPersonalCatalogFile(Drive service) throws IOException {
-    File file;
+    File file = null;
     List files = service.files().list();
     files = files.setQ("title='waptee_personal'");
     FileList fileList = files.execute();
     java.util.List<File> list = fileList.getItems();
-    file = list.get(0);
+    if (list.size() > 0) {
+      file = list.get(0);
+    }
     return file;
   }
 
