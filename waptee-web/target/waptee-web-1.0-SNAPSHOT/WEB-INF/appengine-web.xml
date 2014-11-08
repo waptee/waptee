@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
+    <application>waptee-web</application>
+    <version>prealpha</version>
+    <threadsafe>true</threadsafe>
+    <public-root>/assets</public-root>
+	<static-files>
+	  <include path="/**.html" expiration="5d" />
+	  <include path="/**.js" expiration="5d" />
+	  <include path="/**.css" expiration="5d" />
+	</static-files>
+    <system-properties>
+        <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
+    </system-properties>
+</appengine-web-app>
