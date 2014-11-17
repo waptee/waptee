@@ -465,22 +465,28 @@
 
 </head>
 
-<body id="page-top" class="index">
+<body id="page-top" class="index" ng-app="waptee">
 
     <!-- Contact Section -->
 
-    <section id="contact">
-        <!--  
-            
+    <section id="contact" ng-controller="DocumentController">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>{{ document.label }}</h2>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
                     <form name="sentMessage" id="contactForm" novalidate>
-                        <div class="row control-group">
+                        <div class="row control-group" ng-repeat="attribute in document.attributes">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Name</label>
-                                <input type="text" class="form-control" placeholder="Name" id="name" required data-validation-required-message="Please enter your name.">
+                                <label>{{ attribute.label }}</label>
+                                <input type="text" class="form-control" placeholder="{{ attribute.label }}" id="name" required data-validation-required-message="Please enter your name.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
+                        <!--
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Email Address</label>
@@ -502,8 +508,10 @@
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
-                        <br>
+
                         <div id="success"></div>
+						-->
+						<br />
                         <div class="row">
                             <div class="form-group col-xs-12">
                                 <button type="submit" class="btn btn-success btn-lg">Send</button>
@@ -513,11 +521,12 @@
                 </div>
             </div>
         </div>
-        -->
     </section>
 
     <script src="http://ironsummitmedia.github.io/startbootstrap-freelancer/js/jquery.js"></script>
     <script src="http://ironsummitmedia.github.io/startbootstrap-freelancer/js/bootstrap.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
+    
     <script>
     // Floating label headings for the contact form
     $(function() {
@@ -532,6 +541,19 @@
     </script>
     
     <script>
+    
+	    var waptee = angular.module('waptee', []);
+	    
+	    waptee.controller('DocumentController', function($scope) {
+	    	$scope.document = {
+				label : 'Test Document',
+				attributes : [{
+					label : 'Name'
+				}, {
+					label : 'email'
+				}]
+	    	};
+	    });
     
 	    var schema = {
 			
@@ -555,90 +577,7 @@
 			}]
 			
 		}
-	    
-	    var buildDocumentHeader = function(container) {
-	    	
-    		var documentHeader = $('<div>', {'class' : 'row'});
-        	
-    	    container.append(documentHeader);
-    	    
-    		var documentTitleRow = $('<div>', {'class' : 'col-lg-12 text-center'});
-    	
-    	    documentHeader.append(documentTitleRow);
-    	    
-    		var documentTitle= $('<h2>').text('Profile / Personal Data');
-    	
-    		documentTitleRow.append(documentTitle);
-	    	
-	    };
-	    
-	    var buildDocumentForm = function(container) {
-	    	
-	    	// <div class="row">
-	    	var documentFormRow = $('<div>', {'class' : 'row'});
-	    	container.append(documentFormRow);
-
-	    	// <div class="col-lg-8 col-lg-offset-2">
-	    	var documentFormRowInner = $('<div>', {'class' : 'col-lg-8 col-lg-offset-2'});
-	    	documentFormRow.append(documentFormRowInner);
-
-	    	// <form name="sentMessage" id="contactForm" novalidate>
-	    	var documentForm = $('<form>', {'name' : 'sentMessage', novalidate : null, id : 'contactForm'});
-	    	documentFormRowInner.append(documentForm);
-	    	
-	    	// <div class="row control-group">
-	    	var documentFormAttributeRow = $('<div>', {'class' : 'row control-group'});
-	    	documentForm.append(documentFormAttributeRow);
-	    	
-	    	// <div class="form-group col-xs-12 floating-label-form-group controls">
-	    	var documentFormAttributeRowInner = $('<div>', {'class' : 'form-group col-xs-12 floating-label-form-group controls'});
-	    	documentFormAttributeRow.append(documentFormAttributeRowInner);
-	    	
-	    	// <label>
-	    	var documentFormAttributeLabel = $('<label>').append('Name');
-	    	documentFormAttributeRowInner.append(documentFormAttributeLabel);
-	    	
-	    	// <input type="text" class="form-control" placeholder="Name" id="name" required data-validation-required-message="Please enter your name.">
-	    	var documentFormAttributeInput = $('<input>', 
-	    			{ 
-	    				type : 'text', 
-	    				'class' : 'form-control', 
-	    				placeholder : 'Name', 
-	    				required : null,
-	    				'data-validation-required-message' : 'Please enter your name.'
-	    				
-	    			});
-	    	documentFormAttributeRowInner.append(documentFormAttributeInput);
-	    	
-	    	// <p class="help-block text-danger">
-	    	var documentFormAttributeHelp = $('<input>', { 'class' : 'help-block text-danger' });
-	    	documentFormAttributeRowInner.append(documentFormAttributeHelp);
-	    	
-	    }
-
-        var buildDocument = function(section) {
-        	
-    	    var mainContainer = $('<div>', {'class' : 'container'});
-    	    
-    	    section.append(mainContainer);
-    	    
-    	    buildDocumentHeader(mainContainer);
-
-    	    buildDocumentForm(mainContainer);
-
-        };
         
-	    var section = $('#contact');
-        
-        buildDocument(section);
-        
-        /*
-        	<div class="row">
-                <div class="col-lg-8 col-lg-offset-2">
-                    <form name="sentMessage" id="contactForm" novalidate>
-		*/
-
-		
     </script>
 
 </body>
