@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
     <application>waptee-web</application>
-    <version>prealpha</version>
+    <version>1</version>
     <threadsafe>true</threadsafe>
     <public-root>/assets</public-root>
 	<static-files>
