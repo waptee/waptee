@@ -17,6 +17,8 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.oauth2.Oauth2;
+import com.google.api.services.oauth2.model.Userinfoplus;
 import com.google.appengine.api.utils.SystemProperty;
 import com.waptee.closure.Parameters;
 import com.waptee.web.auth.credentials.CredentialManager;
@@ -25,6 +27,7 @@ import com.waptee.web.auth.credentials.CredentialManager;
  * Credential manager to get, save, delete user credentials.
  *
  * @author jbd@google.com (Burcu Dogan)
+ * @author salomao.marcos@google.com (Burcu Dogan)
  */
 public class GoogleCredentialManager implements CredentialManager {
 
@@ -36,7 +39,7 @@ public class GoogleCredentialManager implements CredentialManager {
   /**
    * Transport layer for OAuth2 client.
    */
-  private HttpTransport transport;
+  private static final HttpTransport TRANSPORT = new NetHttpTransport();
 
   /**
    * Default JSON factory for Google Apis Java client.
@@ -81,7 +84,6 @@ public class GoogleCredentialManager implements CredentialManager {
    */
   public GoogleCredentialManager(Parameters parameters) {
     this.clientSecrets = getClientSecrets();
-    this.transport = new NetHttpTransport();
     this.parameters = parameters;
   }
 
@@ -92,7 +94,7 @@ public class GoogleCredentialManager implements CredentialManager {
   public Credential buildEmpty() {
     return new GoogleCredential.Builder()
         .setClientSecrets(this.clientSecrets)
-        .setTransport(transport)
+        .setTransport(TRANSPORT)
         .setJsonFactory(JSON_FACTORY)
         .build();
   }
@@ -173,7 +175,7 @@ public class GoogleCredentialManager implements CredentialManager {
   public Credential retrieve(String code) {
     try {
       GoogleTokenResponse response = new GoogleAuthorizationCodeTokenRequest(
-          transport,
+          TRANSPORT,
           JSON_FACTORY,
           clientSecrets.getWeb().getClientId(),
           clientSecrets.getWeb().getClientSecret(),
@@ -208,6 +210,42 @@ public class GoogleCredentialManager implements CredentialManager {
     } catch (IOException e) {
       throw new RuntimeException("No client_secrets.json found");
     }
+  }
+
+  @Override
+  public String retrieveAndSave(String code) {
+
+    try {
+
+      // retrieve new credentials with code
+      Credential credential = this.retrieve(code);
+
+      // request userinfo
+      Oauth2 service = getOauth2Service(credential);
+      
+      Userinfoplus about = service.userinfo().get().execute();
+      
+      String id = about.getId();
+      
+      this.save(id, credential);
+
+      return id;
+      
+    } catch (IOException e) {
+      throw new RuntimeException("Can't handle the OAuth2 callback, "
+          + "make sure that code is valid.");
+    }
+    
+  }
+  
+  /**
+   * Build and return an Oauth2 service object based on given request parameters.
+   * @param credential User credentials.
+   * @return Drive service object that is ready to make requests, or null if
+   *         there was a problem.
+   */
+  protected Oauth2 getOauth2Service(Credential credential) {
+    return new Oauth2.Builder(TRANSPORT, JSON_FACTORY, credential).build();
   }
   
 }

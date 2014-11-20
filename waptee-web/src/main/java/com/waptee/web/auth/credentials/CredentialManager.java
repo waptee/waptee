@@ -14,11 +14,42 @@
  */
 package com.waptee.web.auth.credentials;
 
+import com.google.api.client.auth.oauth2.Credential;
+
 /**
  * Gerenciado das credenciais.
  *
  * @author salomao.marcos@gmail.com
  */
 public interface CredentialManager {
+
+  /**
+   * Retrieves a new access token by exchanging the given code with OAuth2
+   * end-points.
+   * @param code Exchange code.
+   * @return A credential object.
+   */
+  Credential retrieve(String code);
+
+  /**
+   * Retrieves a new access token by exchanging the given code with OAuth2
+   * end-points and store it.
+   * @param code Exchange code.
+   * @return A credential id.
+   */
+  String retrieveAndSave(String code);
+
+  /**
+   * Generates a consent page url.
+   * @return A consent page url string for user redirection.
+   */
+  String getAuthorizationUrl();
+
+  /**
+   * Returns credentials of the given user, returns null if there are none.
+   * @param userId The id of the user.
+   * @return A credential object or null.
+   */
+  Credential get(String userId);
 
 }

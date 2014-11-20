@@ -3,13 +3,13 @@
 
 	<!-- Servlet da tela de início -->
   <servlet>
-    <servlet-name>start</servlet-name>
-    <servlet-class>com.waptee.web.servlet.StartServlet</servlet-class>
+    <servlet-name>home</servlet-name>
+    <servlet-class>com.waptee.web.servlet.HomeServlet</servlet-class>
   </servlet>
  
    <servlet-mapping>
-    <servlet-name>start</servlet-name>
-    <url-pattern>/start</url-pattern>
+    <servlet-name>home</servlet-name>
+    <url-pattern>/home</url-pattern>
   </servlet-mapping>
    
 	<!-- Configuracao do arquivo de inicio -->  

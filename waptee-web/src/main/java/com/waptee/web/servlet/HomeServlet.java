@@ -14,11 +14,37 @@
  */
 package com.waptee.web.servlet;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Servlet da tela principal.
  *
  * @author salomao.marcos@gmail.com
  */
-public class StartServlet extends WapteeServlet {
+@SuppressWarnings("serial")
+public class HomeServlet extends OAuthServlet {
+  
+  /**
+   * Ensure that the user is authorized, and setup the required values for
+   * index.jsp.
+   */
+  @Override
+  public void doGet(HttpServletRequest req, HttpServletResponse resp)
+      throws IOException, ServletException {
+    
+    // handle OAuth2 callback
+    handleCallbackIfRequired(req, resp);
+   
+    // Making sure that we have user credentials
+    loginIfRequired(req, resp);
+      
+    // redirect
+    req.getRequestDispatcher("/public/home.html").forward(req, resp);
+  
+  }
 
 }
