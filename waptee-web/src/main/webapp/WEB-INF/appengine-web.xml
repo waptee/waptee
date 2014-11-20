@@ -3,11 +3,12 @@
     <application>waptee-web</application>
     <version>1</version>
     <threadsafe>true</threadsafe>
-    <public-root>/assets</public-root>
+    <public-root>/public</public-root>
 	<static-files>
 	  <include path="/**.html" expiration="5d" />
 	  <include path="/**.js" expiration="5d" />
 	  <include path="/**.css" expiration="5d" />
+	  <include path="/**.jpg" expiration="5d" />
 	</static-files>
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
