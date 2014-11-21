@@ -59,11 +59,6 @@ public class GoogleCredentialManager implements CredentialManager {
       = "/WEB-INF/auth/localhost_client_secrets.json";
   
   /**
-   * Contexto do servlet.
-   */
-  private Parameters parameters;
-
-  /**
    * Scopes for which to request access from the user.
    */
   public static final List<String> SCOPES = Arrays.asList(
@@ -83,8 +78,7 @@ public class GoogleCredentialManager implements CredentialManager {
    * Credential Manager constructor.
    */
   public GoogleCredentialManager(Parameters parameters) {
-    this.clientSecrets = getClientSecrets();
-    this.parameters = parameters;
+    this.clientSecrets = getClientSecrets(parameters);
   }
 
   /**
@@ -192,7 +186,7 @@ public class GoogleCredentialManager implements CredentialManager {
    * Reads client_secrets.json and creates a GoogleClientSecrets object.
    * @return A GoogleClientsSecrets object.
    */
-  private GoogleClientSecrets getClientSecrets() {
+  private GoogleClientSecrets getClientSecrets(Parameters parameters) {
     
     // TODO: do not read on each request
     InputStream stream = null;

@@ -29,6 +29,14 @@ import javax.servlet.http.HttpServletResponse;
 public class HomeServlet extends OAuthServlet {
   
   /**
+   * Método que inicializa o ciclo de vida do servlet.
+   */
+  @Override
+  public void init() throws ServletException {
+    super.init();
+  }
+  
+  /**
    * Ensure that the user is authorized, and setup the required values for
    * index.jsp.
    */
@@ -43,7 +51,7 @@ public class HomeServlet extends OAuthServlet {
     loginIfRequired(req, resp);
       
     // redirect
-    req.getRequestDispatcher("/public/home.html").forward(req, resp);
+    req.getRequestDispatcher("/home.html").forward(req, resp);
   
   }
 
