@@ -60,8 +60,30 @@ public abstract class OAuthServlet extends HttpServlet {
     });
 
   }
-
-
+  
+  /**
+  * Overrided method to Oauth concerns, handling Callback and login.<br/>
+  * <br/>
+  * Receives standard HTTP requests from the public
+  * <code>service</code> method and dispatches
+  * them to the <code>do</code><i>XXX</i> methods defined in 
+  * this class.
+  */
+  @Override
+  protected void service(HttpServletRequest request, HttpServletResponse response) 
+      throws ServletException, IOException {
+    
+    // handle OAuth2 callback
+    handleCallbackIfRequired(request, response);
+   
+    // Making sure that we have user credentials
+    loginIfRequired(request, response);
+    
+    // execute the request
+    super.service(request, response);
+    
+  }
+  
   /**
    * If OAuth2 redirect callback is invoked and there is a code query param, retrieve user
    * credentials and profile. Then, redirect to the home page.
@@ -128,7 +150,7 @@ public abstract class OAuthServlet extends HttpServlet {
     
     if (userId != null) {
       
-      return credentialManager.get(userId);
+      return this.credentialManager.get(userId);
       
     }
     

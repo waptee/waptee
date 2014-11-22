@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet da tela principal.
+ * Home page servlet.
  *
  * @author salomao.marcos@gmail.com
  */
@@ -29,10 +29,12 @@ import javax.servlet.http.HttpServletResponse;
 public class HomeServlet extends OAuthServlet {
   
   /**
-   * Método que inicializa o ciclo de vida do servlet.
+   * Initialize servlet life cycle method.
    */
   @Override
   public void init() throws ServletException {
+    
+    // super implementation.
     super.init();
   }
   
@@ -41,18 +43,13 @@ public class HomeServlet extends OAuthServlet {
    * index.jsp.
    */
   @Override
-  public void doGet(HttpServletRequest req, HttpServletResponse resp)
+  public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
+
+    // redirect to home page.
+    request.getRequestDispatcher(
+            "/home.html").forward(request, response);
     
-    // handle OAuth2 callback
-    handleCallbackIfRequired(req, resp);
-   
-    // Making sure that we have user credentials
-    loginIfRequired(req, resp);
-      
-    // redirect
-    req.getRequestDispatcher("/home.html").forward(req, resp);
-  
   }
 
 }

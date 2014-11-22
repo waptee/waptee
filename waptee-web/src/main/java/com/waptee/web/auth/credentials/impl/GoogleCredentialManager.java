@@ -156,7 +156,7 @@ public class GoogleCredentialManager implements CredentialManager {
         new GoogleAuthorizationCodeRequestUrl(
         clientSecrets.getWeb().getClientId(),
         clientSecrets.getWeb().getRedirectUris().get(0),
-        SCOPES).setAccessType("offline").setApprovalPrompt("force");
+        SCOPES).setApprovalPrompt("force");
 	  return urlBuilder.build();
   }
 
