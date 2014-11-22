@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
 	<!-- Servlet da tela de início -->
-  <servlet>
-    <servlet-name>home</servlet-name>
-    <servlet-class>com.waptee.web.servlet.HomeServlet</servlet-class>
-  </servlet>
- 
-   <servlet-mapping>
-    <servlet-name>home</servlet-name>
-    <url-pattern>/home</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>home</servlet-name>
-    <url-pattern>/oauth2callback</url-pattern>
-  </servlet-mapping>
-   
-	<!-- Configuracao do arquivo de inicio -->  
+	<servlet>
+		<servlet-name>home</servlet-name>
+		<servlet-class>com.waptee.web.servlet.HomeServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>home</servlet-name>
+		<url-pattern>/home</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>home</servlet-name>
+		<url-pattern>/oauth2callback</url-pattern>
+	</servlet-mapping>
+
+	<!-- Configuracao do arquivo de inicio -->
 	<welcome-file-list>
-	   <welcome-file>index.html</welcome-file>
-	</welcome-file-list>	
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+
+	<!-- 
+		Fix - Each redirect, the URL had contained jsessionid.
+		See more about the problem here: http://docs.codehaus.org/display/JETTY/SessionIds
+		And about the Jetty documentation here: http://docs.codehaus.org/display/JETTY/SessionIds
+	 -->
+	<context-param>
+		<param-name>org.mortbay.jetty.servlet.SessionURL</param-name>
+		<param-value>none</param-value>
+	</context-param>
 
 </web-app>
