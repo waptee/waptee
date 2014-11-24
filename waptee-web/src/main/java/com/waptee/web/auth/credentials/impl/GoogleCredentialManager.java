@@ -21,6 +21,7 @@ import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Userinfoplus;
 import com.google.appengine.api.utils.SystemProperty;
 import com.waptee.closure.Parameters;
+import com.waptee.entity.user.User;
 import com.waptee.web.auth.credentials.CredentialManager;
 
 /**
@@ -207,7 +208,7 @@ public class GoogleCredentialManager implements CredentialManager {
   }
 
   @Override
-  public String retrieveAndSave(String code) {
+  public User retrieveAndSave(String code) {
 
     try {
 
@@ -223,7 +224,7 @@ public class GoogleCredentialManager implements CredentialManager {
       
       this.save(id, credential);
 
-      return id;
+      return new User().setId(about.getEmail());
       
     } catch (IOException e) {
       throw new RuntimeException("Can't handle the OAuth2 callback, "

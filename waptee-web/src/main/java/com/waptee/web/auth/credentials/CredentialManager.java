@@ -15,6 +15,7 @@
 package com.waptee.web.auth.credentials;
 
 import com.google.api.client.auth.oauth2.Credential;
+import com.waptee.entity.user.User;
 
 /**
  * Gerenciado das credenciais.
@@ -37,7 +38,7 @@ public interface CredentialManager {
    * @param code Exchange code.
    * @return A credential id.
    */
-  String retrieveAndSave(String code);
+  User retrieveAndSave(String code);
 
   /**
    * Generates a consent page url.

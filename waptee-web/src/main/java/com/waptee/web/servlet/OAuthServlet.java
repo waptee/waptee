@@ -21,11 +21,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.waptee.closure.Parameters;
+import com.waptee.entity.user.User;
+import com.waptee.service.user.UserService;
+import com.waptee.service.user.impl.UserServiceImpl;
 import com.waptee.web.auth.credentials.CredentialManager;
 import com.waptee.web.auth.credentials.impl.GoogleCredentialManager;
 
+import static com.waptee.web.constants.HttpConstants.KEY_SESSION_USERID;
+
 /**
- * Servlet abstrato para configurar credenciais e prover métodos generalizados.
+ * Abstract servlet to OAuth methods.
  *
  * @author salomao.marcos@gmail.com
  */
@@ -33,9 +38,9 @@ import com.waptee.web.auth.credentials.impl.GoogleCredentialManager;
 public abstract class OAuthServlet extends HttpServlet {
   
   /**
-   * Key to get/set userId from and to the session.
+   * User service.
    */
-  public static final String KEY_SESSION_USERID = "user_id";
+  private UserService service;
 
   /**
    * Gerenciado para CRUD de credenciais.
@@ -48,10 +53,15 @@ public abstract class OAuthServlet extends HttpServlet {
   @Override
   public void init() throws ServletException {
 
-    // Inicializando super método.
+    // init super method.
     super.init();
 
-    // Inicializando gerenciador de credenciais.
+    // instantiate UserService default implementation
+    // TODO IoD
+    this.service = new UserServiceImpl();
+
+    // instantiate CredentialManager google implementation
+    // TODO IoD
     this.credentialManager = new GoogleCredentialManager(new Parameters() {
       @SuppressWarnings("unchecked")
       public <T> T get(String name) {
@@ -96,38 +106,45 @@ public abstract class OAuthServlet extends HttpServlet {
    * @param resp Response object.
    * @throws IOException
    */
-  protected void handleCallbackIfRequired(HttpServletRequest req, HttpServletResponse resp)
+  protected void handleCallbackIfRequired(
+      HttpServletRequest request, HttpServletResponse response)
       throws IOException {
 
-    String code = req.getParameter("code");
+    String code = request.getParameter("code");
 
     if (code != null) {
 
-      String id = this.credentialManager.retrieveAndSave(code);
+      User user = this.credentialManager.retrieveAndSave(code);
+
+      // save the user in order it does not exists
+      this.service.save(user);
       
-      req.getSession().setAttribute(KEY_SESSION_USERID, id);
+      request.getSession().setAttribute(KEY_SESSION_USERID, user.getId());
       
-      resp.sendRedirect("/home");
-    
+      response.sendRedirect("/home");
+      
     }
   
   }
   
   /**
    * Redirects to OAuth2 consent page if user is not logged in.
-   * @param req   Request object.
-   * @param resp  Response object.
+   * @param request   Request object.
+   * @param response  Response object.
    */
-  protected void loginIfRequired(HttpServletRequest req,
-      HttpServletResponse resp) {
+  protected void loginIfRequired(
+      HttpServletRequest request,
+      HttpServletResponse response) {
     
-    Credential credential = getCredential(req, resp);
+    Credential credential = 
+        getCredential(request, response);
     
     if (credential == null) {
       // redirect to authorization url
       try {
         
-        resp.sendRedirect(this.credentialManager.getAuthorizationUrl());
+        response.sendRedirect(
+            this.credentialManager.getAuthorizationUrl());
         
       } catch (IOException e) {
         throw new RuntimeException("Can't redirect to auth page");
@@ -139,21 +156,28 @@ public abstract class OAuthServlet extends HttpServlet {
   /**
    * Returns the credentials of the user in the session. If user is not in the
    * session, returns null.
-   * @param req   Request object.
-   * @param resp  Response object.
+   * 
+   * @param request   Request object.
+   * @param request  Response object.
    * @return      Credential object of the user in session or null.
    */
-  protected Credential getCredential(HttpServletRequest req,
-      HttpServletResponse resp) {
+  protected Credential getCredential(
+      HttpServletRequest request,
+      HttpServletResponse response) {
     
-    String userId = (String) req.getSession().getAttribute(KEY_SESSION_USERID);
+    // get user id from session
+    String userId = 
+        (String) request.getSession().getAttribute(KEY_SESSION_USERID);
     
+    // verify id there is a valid id
     if (userId != null) {
       
+      // get credential by id
       return this.credentialManager.get(userId);
       
     }
     
+    // otherwise, return null
     return null;
   }
   

@@ -1,0 +1,5 @@
+/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/web/servlet/HomeServlet.java
+/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/web/auth/credentials/CredentialManager.java
+/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/web/servlet/OAuthServlet.java
+/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/web/auth/credentials/impl/GoogleCredentialManager.java
+/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/closure/Parameters.java
