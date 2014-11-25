@@ -207,6 +207,9 @@ public class GoogleCredentialManager implements CredentialManager {
     }
   }
 
+  /**
+   * TODO insert here the comments.
+   */
   @Override
   public User retrieveAndSave(String code) {
 

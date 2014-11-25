@@ -14,11 +14,14 @@
  */
 package com.waptee.entity.domain;
 
+import com.googlecode.objectify.annotation.Entity;
+
 /**
  * TODO insert here the comments.
  *
  * @author salomao.marcos@gmail.com
  */
+@Entity
 public class Topic extends DomainElement {
   
 }

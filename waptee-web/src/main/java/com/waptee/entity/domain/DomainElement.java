@@ -14,19 +14,36 @@
  */
 package com.waptee.entity.domain;
 
+import java.util.UUID;
+
+import com.waptee.entity.Element;
+
 /**
  * TODO insert here the comments.
  *
  * @author salomao.marcos@gmail.com
  */
-public abstract class DomainElement {
+public abstract class DomainElement extends Element {
   
+  /**
+   * TODO insert here the comments.
+   */
   private String name;
 
+  /**
+   * TODO insert here the comments.
+   *
+   * @return
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * TODO insert here the comments.
+   *
+   * @param name
+   */
   public void setName(String name) {
     this.name = name;
   }

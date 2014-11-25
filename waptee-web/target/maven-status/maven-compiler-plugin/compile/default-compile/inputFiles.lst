@@ -1,5 +1,14 @@
+/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/entity/Element.java
+/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/service/user/UserService.java
 /home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/web/servlet/HomeServlet.java
+/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/entity/user/User.java
+/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/service/CRUDService.java
 /home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/web/auth/credentials/CredentialManager.java
-/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/web/servlet/OAuthServlet.java
 /home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/web/auth/credentials/impl/GoogleCredentialManager.java
+/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/web/constants/HttpConstants.java
+/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/entity/domain/Topic.java
+/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/service/user/impl/UserServiceImpl.java
+/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/entity/domain/DomainElement.java
+/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/entity/domain/Documet.java
+/home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/web/servlet/OAuthServlet.java
 /home/salomax/git/waptee/waptee-web/src/main/java/com/waptee/closure/Parameters.java

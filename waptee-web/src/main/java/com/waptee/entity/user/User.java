@@ -14,6 +14,7 @@
  */
 package com.waptee.entity.user;
 
+import com.googlecode.objectify.annotation.Entity;
 import com.waptee.entity.Element;
 
 /**
@@ -21,6 +22,7 @@ import com.waptee.entity.Element;
  *
  * @author salomao.marcos@gmail.com
  */
+@Entity
 public class User extends Element {
 
 }
