@@ -12,36 +12,16 @@
  * This file is subject to the terms and conditions defined in
  * file LICENSE, which is part of this source code package.
  */
-package com.waptee.service;
+package com.waptee.dao.user;
+
+import com.waptee.dao.EntityDAO;
+import com.waptee.entity.user.User;
 
 /**
  * TODO insert here the comments.
  *
- * @author salomao.marcos@gmail.com
+ * @author {email}
  */
-public interface CRUDService<E, K> {
+public interface UserDAO extends EntityDAO<User> {
   
-  /**
-   * TODO insert here the comments.
-   *
-   * @param e
-   * @return
-   */
-  public E save(E e);
-
-  /**
-   * TODO insert here the comments.
-   *
-   * @param key
-   * @return
-   */
-  public E retrieve(K key);
-  
-  /**
-   * TODO insert here the comments.
-   *
-   * @param key
-   */
-  public void delete(K key);
-
 }

@@ -12,10 +12,10 @@
  * This file is subject to the terms and conditions defined in
  * file LICENSE, which is part of this source code package.
  */
-package com.waptee.dao;
+package com.waptee.entity;
 
-import com.waptee.entity.Element;
-import com.waptee.entity.ElementUnitTest;
+import com.waptee.entity.domain.LabelVO;
+import com.waptee.entity.domain.TopicElement;
 import com.waptee.entity.user.User;
 
 /**
@@ -23,16 +23,24 @@ import com.waptee.entity.user.User;
  *
  * @author {email}
  */
-public class UserUnitTest extends ElementUnitTest {
+public class UserEntityBuilderTest {
   
   /**
    * TODO insert here the comments.
    *
    * @return
    */
-  @Override
-  protected <E extends Element> E getElement() {
-    return new User().generateId();
+  public User getEntity() {
+
+    LabelVO label = new LabelVO();
+    
+    label.setLang("en");
+    label.setValue("Dummy");
+    
+    TopicElement topic = new TopicElement().addLabel(label).generateId();
+    
+    return new User().addTopic(topic).generateId();
+    
   }
   
   /**
@@ -40,11 +48,8 @@ public class UserUnitTest extends ElementUnitTest {
    *
    * @return
    */
-  @SuppressWarnings("unchecked")
-  @Override
-  protected <E extends Element> Class<E> getElementClass() {
-    return (Class<E>) User.class;
+  public Class<User> getEntityClass() {
+    return User.class;
   }
-  
 
 }

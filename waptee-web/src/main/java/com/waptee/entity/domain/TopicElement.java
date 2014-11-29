@@ -12,39 +12,17 @@
  * This file is subject to the terms and conditions defined in
  * file LICENSE, which is part of this source code package.
  */
-package com.waptee.dao;
+package com.waptee.entity.domain;
 
+import com.googlecode.objectify.annotation.Entity;
 import com.waptee.entity.Element;
-import com.waptee.entity.ElementUnitTest;
-import com.waptee.entity.domain.Topic;
 
 /**
  * TODO insert here the comments.
  *
- * @author {email}
+ * @author salomao.marcos@gmail.com
  */
-public class TopicUnitTest extends ElementUnitTest {
+@Entity
+public class TopicElement extends Element {
   
-  /**
-   * TODO insert here the comments.
-   *
-   * @return
-   */
-  @Override
-  protected <E extends Element> E getElement() {
-    return new Topic().generateId();
-  }
-  
-  /**
-   * TODO insert here the comments.
-   *
-   * @return
-   */
-  @SuppressWarnings("unchecked")
-  @Override
-  protected <E extends Element> Class<E> getElementClass() {
-    return (Class<E>) Topic.class;
-  }
-  
-
 }

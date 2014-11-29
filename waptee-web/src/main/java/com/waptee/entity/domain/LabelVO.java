@@ -14,38 +14,53 @@
  */
 package com.waptee.entity.domain;
 
-import java.util.UUID;
-
-import com.waptee.entity.Element;
+import com.waptee.entity.ValueObject;
 
 /**
  * TODO insert here the comments.
+ * 
+ * {@link http://en.wikipedia.org/wiki/Language_code}
  *
- * @author salomao.marcos@gmail.com
+ * @author {email}
  */
-public abstract class DomainElement extends Element {
+public class LabelVO implements ValueObject {
   
   /**
    * TODO insert here the comments.
    */
-  private String name;
-
+  private String lang;
+  
   /**
    * TODO insert here the comments.
-   *
-   * @return
    */
-  public String getName() {
-    return name;
+  private String value;
+  
+  /**
+   * TODO insert here the comments.
+   */
+  public String getLang() {
+    return lang;
   }
 
   /**
    * TODO insert here the comments.
-   *
-   * @param name
    */
-  public void setName(String name) {
-    this.name = name;
+  public void setLang(String lang) {
+    this.lang = lang;
+  }
+
+  /**
+   * TODO insert here the comments.
+   */
+  public String getValue() {
+    return value;
+  }
+
+  /**
+   * TODO insert here the comments.
+   */
+  public void setValue(String value) {
+    this.value = value;
   }
 
 }

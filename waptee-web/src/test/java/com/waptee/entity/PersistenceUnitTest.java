@@ -14,16 +14,11 @@
  */
 package com.waptee.entity;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.Closeable;
 
@@ -32,7 +27,7 @@ import com.googlecode.objectify.util.Closeable;
  *
  * @author {email}
  */
-public abstract class ElementUnitTest {
+public class PersistenceUnitTest {
   
   /**
    * Helper to local test.
@@ -65,59 +60,6 @@ public abstract class ElementUnitTest {
   public void tearDown() throws Exception {
     this.session.close();
     this.helper.tearDown();
-  }
-  
-  /**
-   * TODO insert here the comments.
-   *
-   * @return
-   */
-  protected abstract <E extends Element> E getElement();
-
-  /**
-   * TODO insert here the comments.
-   *
-   * @return
-   */
-  protected abstract <E extends Element> Class<E> getElementClass();
-
-  /**
-   * TODO insert here the comments.
-   */
-  @Test
-  public void testElementPersistence() {
-    
-    // get Objectify
-    final Objectify ofy = ObjectifyService.ofy();
-    
-    // register element class
-    ofy.factory().register(getElementClass());
-    
-    // Simple create an user
-    Element element = getElement();
-    
-    // save sync element
-    ofy.save().entities(element).now();
-
-    // get id element saved
-    String id = element.getId();
-
-    // verify id
-    assertNotEquals(id, null);
-    
-    // Get it back
-    Element loadedElement = 
-        ofy.load().type(getElementClass()).id(id).now();
- 
-    // Load verification
-    assertEquals(element, loadedElement);
- 
-    // Change some data and write it
-    ofy.save().entities(element).now();
- 
-    // Delete it
-    ofy.delete().entity(element).now();
-    
   }
 
 }

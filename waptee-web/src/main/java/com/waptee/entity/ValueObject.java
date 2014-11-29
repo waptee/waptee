@@ -12,16 +12,13 @@
  * This file is subject to the terms and conditions defined in
  * file LICENSE, which is part of this source code package.
  */
-package com.waptee.service.user;
-
-import com.waptee.entity.user.User;
-import com.waptee.service.EntityService;
+package com.waptee.entity;
 
 /**
  * TODO insert here the comments.
  *
- * @author salomao.marcos@gmail.com
+ * @author {email}
  */
-public interface UserService extends EntityService<User> {
+public interface ValueObject {
 
 }

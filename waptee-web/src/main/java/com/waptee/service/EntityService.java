@@ -12,51 +12,35 @@
  * This file is subject to the terms and conditions defined in
  * file LICENSE, which is part of this source code package.
  */
-package com.waptee.service.user.impl;
-
-import com.waptee.dao.user.UserDAO;
-import com.waptee.dao.user.impl.UserDaoImpl;
-import com.waptee.entity.user.User;
-import com.waptee.service.user.UserService;
+package com.waptee.service;
 
 /**
  * TODO insert here the comments.
  *
  * @author salomao.marcos@gmail.com
  */
-public class UserServiceImpl implements UserService {
+public interface EntityService<E> {
   
   /**
    * TODO insert here the comments.
+   *
+   * @param e
    */
-  private UserDAO userDao;
-  
-  /**
-   * TODO insert here the comments.
-   */
-  public UserServiceImpl() {
-    this.userDao = new UserDaoImpl();
-  }
-  
-  /**
-   * TODO insert here the comments.
-   */
-  public void save(User user) {
-    this.userDao.save(user);
-  }
+  public void save(E e);
 
   /**
    * TODO insert here the comments.
+   *
+   * @param key
+   * @return
    */
-  public User retrieve(String id) {
-    return this.userDao.retrieve(id);
-  }
+  public E retrieve(String key);
   
   /**
    * TODO insert here the comments.
+   *
+   * @param key
    */
-  public void delete(User user) {
-    this.userDao.delete(user);
-  }
+  public void delete(E e);
 
 }

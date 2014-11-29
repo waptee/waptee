@@ -12,14 +12,30 @@
  * This file is subject to the terms and conditions defined in
  * file LICENSE, which is part of this source code package.
  */
-package com.waptee.entity.domain;
+package com.waptee.dao;
 
+import com.waptee.entity.Entity;
 
 /**
  * TODO insert here the comments.
  *
- * @author salomao.marcos@gmail.com
+ * @author {email}
  */
-public class Documet extends DomainElement {
+public interface EntityDAO<E extends Entity> {
+  
+  /**
+   * TODO insert here the comments.
+   */
+  public void save(E user);
+
+  /**
+   * TODO insert here the comments.
+   */
+  public E retrieve(String id);
+  
+  /**
+   * TODO insert here the comments.
+   */
+  public void delete(E e);
 
 }

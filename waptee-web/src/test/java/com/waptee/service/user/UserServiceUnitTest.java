@@ -12,51 +12,56 @@
  * This file is subject to the terms and conditions defined in
  * file LICENSE, which is part of this source code package.
  */
-package com.waptee.service.user.impl;
+package com.waptee.service.user;
 
-import com.waptee.dao.user.UserDAO;
-import com.waptee.dao.user.impl.UserDaoImpl;
+import com.waptee.entity.UserEntityBuilderTest;
 import com.waptee.entity.user.User;
-import com.waptee.service.user.UserService;
+import com.waptee.service.EntityServiceUnitTest;
+import com.waptee.service.user.impl.UserServiceImpl;
 
 /**
  * TODO insert here the comments.
  *
- * @author salomao.marcos@gmail.com
+ * @author {email}
  */
-public class UserServiceImpl implements UserService {
-  
-  /**
-   * TODO insert here the comments.
-   */
-  private UserDAO userDao;
-  
-  /**
-   * TODO insert here the comments.
-   */
-  public UserServiceImpl() {
-    this.userDao = new UserDaoImpl();
-  }
-  
-  /**
-   * TODO insert here the comments.
-   */
-  public void save(User user) {
-    this.userDao.save(user);
-  }
+public class UserServiceUnitTest extends EntityServiceUnitTest<User, UserService> {
 
   /**
    * TODO insert here the comments.
    */
-  public User retrieve(String id) {
-    return this.userDao.retrieve(id);
+  private UserEntityBuilderTest userBuilder = new UserEntityBuilderTest();
+  
+  /**
+   * TODO insert here the comments.
+   *
+   * @return
+   */
+  @Override
+  public User getEntity() {
+    return userBuilder.getEntity();
+    
   }
   
   /**
    * TODO insert here the comments.
+   *
+   * @return
    */
-  public void delete(User user) {
-    this.userDao.delete(user);
+  @Override
+  public Class<User> getEntityClass() {
+    return userBuilder.getEntityClass();
   }
+
+  /**
+   * TODO insert here the comments.
+   *
+   * @return
+   */
+  @Override
+  public UserService getEntityService() {
+    return new UserServiceImpl();
+  }
+
+  
 
 }

@@ -12,16 +12,42 @@
  * This file is subject to the terms and conditions defined in
  * file LICENSE, which is part of this source code package.
  */
-package com.waptee.entity.domain;
+package com.waptee.dao.user.impl;
 
-import com.googlecode.objectify.annotation.Entity;
+import static com.waptee.dao.ofy.OfyService.ofy;
+
+import com.waptee.dao.user.UserDAO;
+import com.waptee.entity.user.User;
 
 /**
  * TODO insert here the comments.
  *
- * @author salomao.marcos@gmail.com
+ * @author {email}
  */
-@Entity
-public class Topic extends DomainElement {
-  
+public class UserDaoImpl implements UserDAO {
+
+  /**
+   * TODO insert here the comments.
+   */
+  @Override
+  public void save(User user) {
+    ofy().save().entity(user).now();
+  }
+
+  /**
+   * TODO insert here the comments.
+   */
+  @Override
+  public User retrieve(String id) {
+    return ofy().load().type(User.class).id(id).now();
+  }
+
+  /**
+   * TODO insert here the comments.
+   */
+  @Override
+  public void delete(User user) {
+    ofy().delete().entity(user).now();
+  }
+
 }
